@@ -4,20 +4,20 @@ public class LoginExample {
 	public static void main(String args[]) {
 		try {
 			login("blue", "12345");
-			System.out.println("ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Î±ï¿½ï¿½ï¿½ ï¿½Ç¾ï¿½ï¿½ï¿½ï¿½Ï´ï¿½.");
-		} catch (Exception e) {
+			System.out.println("¼º°øÀûÀ¸·Î ·Î±×ÀÎ µÇ¾ú½À´Ï´Ù.");
+		} catch(Exception e) {
 			System.out.println(e.getMessage());
 		}
 	}
-
+	
 	public static void login(String id, String password) throws NotExistIDException, WrongPasswordException {
-		// idï¿½ï¿½ "blue"ï¿½ï¿½ ï¿½Æ´Ï¶ï¿½ï¿½, NotExistIDException ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½
-		if (!id.equals("blue")) {
-			throw new NotExistIDException("ï¿½ï¿½ï¿½Ìµï¿½ ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½ ï¿½Ê½ï¿½ï¿½Ï´ï¿½.");
-		}
-		// passwordï¿½ï¿½ "12345"ï¿½ï¿½ ï¿½Æ´Ï¶ï¿½ï¿½ WrongPasswordException ï¿½ï¿½ï¿½ï¿½ ï¿½ß»ï¿½
-		if (!password.equals("12345")) {
-			throw new WrongPasswordException("ï¿½Ð½ï¿½ï¿½ï¿½ï¿½å°¡ Æ²ï¿½ï¿½ï¿½Ï´ï¿½.");
+		//id°¡ "blue"°¡ ¾Æ´Ï¶ó¸é, NotExistIDException ¿¹¿Ü ¹ß»ý
+		if(!id.equals("blue")) {
+			throw new NotExistIDException("¾ÆÀÌµð°¡ Á¸ÀçÇÏÁö ¾Ê½À´Ï´Ù.");
+		} 
+		//password°¡ "12345"°¡ ¾Æ´Ï¶ó¸é WrongPasswordException ¿¹¿Ü ¹ß»ý
+		if(!password.equals("12345")) {
+			throw new WrongPasswordException("ÆÐ½º¿öµå°¡ Æ²¸³´Ï´Ù.");
 		}
 	}
 }
