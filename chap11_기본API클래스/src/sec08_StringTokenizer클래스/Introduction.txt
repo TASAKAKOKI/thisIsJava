@@ -1,0 +1,25 @@
+문자열 분리 방법
+	1. String클래스의 split()메소드 이용 : 정규표현식으로 구분
+	2. java.util.StringTokenizer 이용 : 문자로 구분
+
+	String의 split()메소드
+		정규표현식을 구분자로해서 부분 문자열을 분리한 후 "배열"에 저장하고 리턴한다.
+			String text = "홍길동&이수홍,박명수-김자바-최명호";
+			String[] names = text.split("&|,|-");
+	StringTokenizer
+		문자열이 한 종류의 구분자로 연결되어 있는 경우 사용
+		split처럼 다양한 구분자를 매개값으로 줄 수 없고, 통일된 구분자로 구분되어 있는 문자열을 분리함
+			String text = "홍길동/이수홍/박명수";
+			StringTokenizer st = new StringTokenizer(text,"/"); //첫번째 매개값: 전체 문자열, 두번째 매개값: 구분자문자(default: 공백)
+				//StringTokenizer객체는 분리된 문자들을 Token으로 가지고 있다.
+				//이를 꺼내어 사용하기 위한 코드
+				while(st.hasMoreTokens()) {  //hasMoreTokens()는 boolean값을 반환한다.
+					String token = st.nextToken();	//nextToken()은 Token은 하나씩 꺼내옴
+					System.out.println(token);
+				}
+				리턴값	::	메소드명			::	설명
+				int		::	countTokens()	:: 꺼내지 않고 남아있는 토큰의 수
+				boolean	:: 	hasMoreTokens()	:: 남아 있는 토큰의 유무
+				String	::	nextToken()		:: 토큰을 하나씩 꺼내옴
+		한번 생성되어 사용된 StringTokenizer는 다시 사용 할 수 없다.
+		따라서, 다시 사용하고자 할 때는, 다시 new로 생성해 주어야 한다.
