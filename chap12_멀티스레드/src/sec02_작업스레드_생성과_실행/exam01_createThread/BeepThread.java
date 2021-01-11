@@ -12,6 +12,7 @@ public class BeepThread extends Thread{
 		Toolkit toolkit = Toolkit.getDefaultToolkit();
 		for(int i = 0; i < 5; i++) {
 			toolkit.beep();
+			System.out.println(Thread.currentThread().getName() + "에서 실행: 비프음");
 			try{Thread.sleep(700);} catch(Exception e) {}
 		}
 	}
@@ -20,7 +21,7 @@ public class BeepThread extends Thread{
  * Thread thread = new BeepThread();
  * */
 
-/*방법2_Thread익명객체를 생성하여 사용하기
+/*방법2_Thread를 상속하는 하위스레드의 익명객체를 생성하여 run메소드를 재정의하여 사용하기
 Thread thread = new Thread() {
 	public void run() {
 		//스레드가 실행할 코드;
