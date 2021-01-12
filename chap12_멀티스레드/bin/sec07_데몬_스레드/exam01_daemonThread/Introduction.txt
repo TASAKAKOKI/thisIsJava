@@ -1,0 +1,19 @@
+데몬(daemon)스레드
+	주 스레드의 작업을 돕는 보조적인 역할을 수행하는 스레드
+	주 스레드가 종료되면 데몬 스레드는 강제적으로 자동 종료된다.
+		e.g)워드 프로세서의 자동저장스레드, 미디어플레이어의 동영상 및 음악재생 스레드, 가비지컬렉터(JVM이 가동중에만 실행되게끔)
+	
+	데몬 스레드 설정
+		주 스레드가 데몬이 될 스레드의 setDaemon(true)를 호출한다.
+			public static void main(String[] args) {
+				AutoSaveThread thread = new AutoSaveThread();
+				theread.setDaemon(true);
+				thread.start();
+				...
+			}
+			
+		반드시 start()메소드를 호출 하기 전에 setDaemon(true)를 호출해야 한다.
+			그렇지 않을 경우, illegalThreadStateException이 발생한다.
+		
+	데몬 스레드 확인 방법
+		isDaemon()메소드의 리턴값을 조사한다.
