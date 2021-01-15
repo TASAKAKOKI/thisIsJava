@@ -1,0 +1,22 @@
+콘솔(Console)
+	시스템을 사용하기 위해 키보드로 입력을 받고 화면으로 출력하는 소프트웨어
+	
+	Unix, Linux:	터미널
+	Windows운영체제:	명령 프롬프트
+	이클립스:			Console 뷰
+	
+		e.g) 프로그램					콘솔
+			System.in ::입력스트림		입력값 대기
+			System.out::출력스트림		출력하여 표시
+			System.err::출력스트림(에러메시지 출력용)
+			
+	
+System.in 필드
+	InputStream타입의 입력 스트림이므로 InputStream타입의 변수에 대입할 수 있다.
+		InputStream is = System.in;
+	읽은 byte는 키보드의 아스키코드(ascii code)이다.
+		int asciiCode = is.read();
+	아스키 코드로부터 문자 읽기
+		char inputChar = (char) is.read();
+
+			

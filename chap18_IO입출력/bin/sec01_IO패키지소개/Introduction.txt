@@ -1,0 +1,23 @@
+java.io패키지
+	자바의 기본적인 데이터 입출력(IO:Input/Output)API 제공
+
+java.io 패키지의 주요 클래스
+	File									::	파일 시스템의 파일정보(이름,경로,크기,속성 등)를 얻기 위한 클래스
+	
+	Console									::	콘솔로부터 문자를 입출력하기 위한 클래스
+	
+	InputStream/OutputStream				::	바이트 단위 입출력을 위한 최상위 입출력 스트림 클래스
+	
+	FileInputStraem/FileOutputStream		::	InputStream/OutputStream의 하위 클래스들
+	DataInputStream/DataOutputStream			바이트 단위 입출력을 위한 하위 스트림 클래스들
+	ObjectInputStream/ObjectOutputStream	
+	PrintStream								
+	BufferedInputStream/BufferedOutputStream
+	
+	Reader/Writer							::	문자 단위 입출력을 위한 최상위 입출력 스트림 클래스
+	
+	FileReader/FileWriter					::	문자 단위 입출력을 위한 하위 스트림 클래스들
+	InputStreamReader/OutputStreamWriter	::	바이트스트림을 문자스트림으로 바꿔주는 클래스
+	PrintWriter								::	문자를 출력하는 클래스
+	BufferedReader/BufferdWriter			:: 	성능향상을 위해서 사용하는 보조 스트림
+	
