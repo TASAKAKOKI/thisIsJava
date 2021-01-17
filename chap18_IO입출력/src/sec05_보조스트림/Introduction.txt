@@ -1,0 +1,187 @@
+보조스트림
+	다른 스트림과 연결이 되어 여러가지 편리한 기능을 제공해주는 스트림
+		문자 변환, 입출력 성능 향상, 기본 데이터 타입 입출력, 객체 입출력 등의 기능을 제공
+	
+	 보조 스트림 생성
+	 	보조스트림 변수	 = new 보조스트림(연결스트림);
+	 	
+	 	InputStream is = System.in;	//InputStream은 바이트 기반 스트림, 이를 통해 들어오는 데이터가 문자라면,
+	 								//프로그램에서 이를 바이트로 받는 것 보다는 문자로 받는 것이 좋음
+	 								//입력스트림에서 바이트를 받더라도, 보조스트림으로 문자로 변환해서 
+	 								//프로그램에서 문자로 받도록 하는 것이 효율적
+	 	InputStreamReader reader = new InputStreamReader(is);
+	 								//문자변환을 하는 보조스트림이 InputStreamReader이다.
+	 								//이를 InputStream에 연결을 할 때는, 
+	 								//위와 같이 생성자에 InputStream객체를 주면 된다.
+	 	
+	 보조 스트림 체인
+	 	-> 주 입력 스트림 -> 보조 스트림1 -> 보조 스트림 2 -> 프로그램 -> 보조 스트림2 -> 보조 스트림 1 -> 주 출력 스트림 -> 
+	
+문자 변환 보조 스트림
+	소스 스트림이 바이트 기반 스트림이지만 데이터가 문자일 경우 사용할 수 있다.
+		Reader와 Writer는 문자 단위로 입출력하기 때문에 바이트 기반 스트림보다는 편리하다.
+		문자셋의 종류를 지정할 수 있기 때문에 다양한 문자를 입출력 할 수 있다.
+	
+	InputStreamReader
+		바이트 -> InputStream -> InputStreamReader(보조스트림)	-> 프로그램(문자로 전달)
+		
+		InputStream is = System.in;
+		Reader reader = new InputStreamReader(is);
+			//콘솔로부터 InputStream을 얻어(키보드로 입력된 문자가 바이트로 전달됨) 바이트를 얻은 후,
+			//이를 InputStreamReader를 이용해 문자로 변환하여 읽기
+		
+		FileInputStream fis = new FileInputStream("파일경로");
+		Reader reader = new InputStreamReader(fis);
+			//문자파일(.txt)로부터 FileInputStream을 얻었다. 
+			//FileInputStream은 문자을 얻었으나, InputStream기반이라 바이트를 읽음
+			//이를 InputStreamReader를 통해 문자로 바꿔줄 수 있다.
+			
+	OutputStreamWriter
+		프로그램(문자) -> OutputStreamWriter(보조스트림) -> OutputStream -> 바이트
+		
+		FileOutputStream fos = new FileOutputStream("txt파일 경로");
+		Writer writer = new OutputStreamWriter(fos);
+			//OutputStream을 Writer로 연결해주는 보조스트림 생성하여 OutputStream객체를 매개값으로 전달
+	
+성능 향상 보조 스트림
+	입출력 성능에 영향을 미치는 입출력 소스
+		하드 디스크
+		느린 네트워크
+	
+	버퍼를 이용한 해결
+		입출력 소스와 직접 작업하지 않고 버퍼(buffer)와 작업하므로서 실행 성능을 향상
+			프로그램이 직접적으로 하드디스크에 데이터를 전송해주는 것이 아니라,
+			중간에 버퍼를 두어서, 버퍼에 데이터를 고속으로 전송,
+			중간의 메모리 버퍼는 자신이 가지고 있는 메모리버퍼에 데이터가 꽉차게 되면, 한번에 버퍼 내용 모두를 전송
+			프로그램은 쓰기 속도가 향상
+			버퍼가 차게 되면 데이터를 한꺼번에 하드 디스크로 보내므로 출력횟수 감소
+
+	BufferedInputStream, BufferedReader
+		BufferedInputStream은 InputStream에 연결되어 버퍼를 제공해줌
+		BufferedReader는 Reader에 연결되어 버퍼를 제공해줌
+			입력소스에서 직접 읽지 않고, BufferedInputStream, BufferedReader에서 데이터를 고속으로 읽기가 가능
+			BufferedInputStream, BufferedReader는 입력 소스에서 데이터를 가져와서 버퍼에 채워놓음
+			
+		생성방법
+			BufferedInputStream bis = new BufferedInputStream(바이트 입력스트림);
+			BufferedReader br = new BufferedReader(문자입력스트림);
+			
+	BufferedOutputStream, BufferedWriter
+		BufferedOutputStream은 OutputStream에 연결되어 버퍼를 제공해줌
+		BufferedWriter는 Writer에 연결되어 버퍼를 제공해줌
+			프로그램에서 목적지로 바로 데이터를 보내는 것이 아니라, BufferedOutputStream, BufferedWritder에 데이터를 고속으로 보냄
+			BufferedOutputStream, BufferedWriter는 버퍼에 있는 데이터를 목적지에 보내는데,
+			버퍼에 데이터가 꽉 차면 자동적으로 목적지로 데이터를 출력하는데,
+			버퍼의 크기보다 데이터가 더 작으면 자동으로 출력되지 않으므로, flush()를 이용하여 버퍼의 내용을 비워주고, 목적지로 보내야 한다.
+		
+		생성코드
+			BufferedOutputStream bos = new BufferedOutputStream(바이트출력스트림);
+			BufferedWriter bw = new BufferedWriter(문자출력스트림);
+	
+기본 타입 입출력 보조 스트림
+	기본 데이터 타입을 읽거나 출력하는 것을 편리하게 해준다.
+		InputStream에 DataInputStream을 보조스트림으로 제공해주거나,
+		OutputStream에 DataOutputStream을 보조스트림으로 제공해준다.
+		
+		DataInputStream dis = new DataInputStream(바이트 입력스트림);
+		DataOutputStream dos = new DataOutputStream(바이트 출력스트림);
+		
+프린터 보조 스트림
+	프로그램에서 기본타입이거나, 문자열을 출력할 떄, 개행(줄바꿈)을 자주 해야한다면,(println()/print()/printf())
+	PrintStream / PrintWriter 라는 보조스트림을 OutputStream/Writer스트림에 연결해서 사용하면 편리하다.
+	
+	PrintStream은 System.out필드를 가지고 println()할때 사용했던 스트림
+	PrintStream과 PrintWriter는 거의 동일한 메소드를 가지고 있음
+	PrintStream은 OutputStream에 연결되고,
+	PrintWriter는 Writer에 연결되는 차이를 가지고 있다.
+	
+		PrintStream ps = new PrintStream(바이트기반 출력스트림);
+		PrintWriter pw = new PrintWriter(문자기반 출력스트림);
+		
+	printf()메소드
+		printf(String format, Object... args)
+				형식화된 문자열
+							형식화된 문자열에 제공될 매개값들
+						
+			%[argument_index$][flags][width][.precision] conversion 
+			 	매개값의 순번$		-,0	전체자릿수   소수자릿수	  변환문자
+			 //대괄호는 생략이 가능하다는 의미
+			 				//-는 오른쪽이 공백으로 채워짐
+			 				//0은 왼쪽이 공백으로 채워짐
+			 		
+객체 입출력 보조 스트림
+	객체를 파일 또는 네트워크로 입출력할 수 있는 기능 제공
+	
+	ObjectInputStream, ObjectOutputStream
+		바이트 -> InputStream -> ObjectInputStream(보조스트림)(역직렬화) -> 프로그램(객체) -> ObjectOutputStream(보조스트림)(직렬화) -> OutputStream -> 바이트
+			직렬화: 객체를 바이트 배열로 만들어 내보내는 작업		
+	 		역직렬화: 들어오는 바이트 배열을 객체로 만드는 작업		
+		
+		ObjectInputStream ois = new ObjectInputStream(바이트기반 입력스트림);
+		ObjectOutputStream oos = new ObjectOutputStream(바이트기반 출력스트림);
+		
+		oos.writeObject(객체);
+		
+		객체타입 변수 = (객체타입) ois.readObject(); //(객체타입)을 이용하여 강제타입변환을 한다.
+		
+직렬화가 가능한 클래스(Serializable)
+	자바는 Serializable 인터페이스를 구현한 클래스만 직렬화 할 수 있도록 제한하고 있다.
+		public class XXX implements Serializable {
+			public int field1;
+			protected int field2;
+			int field3;
+			private int field4;
+			public static int field5;
+				//위의 5가지 형식의 필드는 바이트배열로 이뤄지는 직렬화 가능
+			transient int field6;
+				//transient키워드가 붙은 필드는 직렬화에서 제외된다.
+		}
+	
+	serialVersionUID 필드
+		직렬화된 객체를 역직렬화할 때는 직렬화 했을 때와 같은 클래스를 사용
+		클래스의 이름이 같더라도 클래스의 내용이 변경된 경우 역질렬화는 실패
+		serialVersionUID는 같은 클래스임을 알려주는 식별자 역할
+			serializable 인터페이스가 구현되면 컴파일시에 자동적으로 serialVersionUID 정적 필드가 추가됨
+			재컴파일하면 serialVersionUID의 값이 달라짐
+		불가피한 수정이 있을 경우 명시적으로 serialVersionUID를 선언
+			static final long serialVersionUID = 정수값;	serialver.exe로 자동생성 가능
+			
+	writeObject()와 readObject()메소드
+		serializable 인터페이스를 구현한 객체를 출력할 때는, 
+		출력하기 직전에 자동으로 writeObejct()이라는 메소드가 실행이 되고 출력이 된다.
+		serializable 인터페이스를 구현한 객체를 입력할 때는, 
+		입력하기 직전에 자동으로 readObejct()이라는 메소드가 실행이 되고 입력이 된다.
+		
+		따라서, 출력하기 전에 실행할 코드가 있다면,
+		위 두 메소드를 재정의하여 넣어주면 된다.
+			//직렬화 직전에 자동 호출됨
+			//추가 직렬화할 내용을 작성할 수 있음
+			private void writeObject(ObjectOutputStream oos) throws IOException {
+				...//여기에 출력 전에 실행하고 싶은 코드를 입력
+				oos.defaultWriteObject();
+			}
+		
+			private void readObject(ObjectInputStream ois) throws IOException {
+				...//여기에 입력 전에 실행하고 싶은 코드를 입력
+				ois.defaultReadObject();
+			}
+		 	추가 직렬화 및 역질렬화가 필요한 경우
+				-부모 클래스가 Serializable 구현하지 않고, 자식 클래스가 Serializable을 구현한 경우
+				-부모 필드는 직렬화에서 제외됨
+				-따라서 writeObject()에서 부모 필드 직렬화가 필요하고
+				-readObject()에서 부모 필드 역질렬화가 필요하다.
+			 	//defaultXXXObject()메소드는 매개값으로 제공되는 스트림의 defaultXXXObject()을 호출함으로써, 원래 ObjectXXXStreamd의 원래 XXXObject()을 호출해준다.
+			 	//원래 객체를 읽던(쓰던)방식으로 읽어라(써라)라는 역할을 함
+			 	//이처럼, 재정의가 필요한 경우는:
+			 		Parent클래스와 이를 상속한 Child클래스가 있다고 할때, Child만 Serializable을 구현했다고 하자.
+			 		Parent에 field1이 있고, Child에 field2가 있다고 하자.
+			 		Child객체를 생성한 뒤, writeObject에 매개값으로 제공을 해주면, field2만 직렬화가 이뤄져 출력이 되고, field1은 출력되지 않는다.
+			 		반대로, Parent에서만 serializable을 구현한 뒤,
+			 		Chile객체를 생성한 뒤, writeObject에 매개값으로 제공을 해주면, field1과 field2가 모두 바이트화 되어  직렬화가 이뤄져 출력이 된다.
+			 		이는, Parent에서 Serializable을 구현했기 때문에, 이를 상속한 Child도 이를 구현하게 되므로,
+			 		Child에서 writeObject()을 하게 되면, fiedl1과 field2가 모두 출력이 되게 되는 것이다.
+			 		
+			 		만약, Parent는 serializable을 구현하지 않고, Child만 구현한 경우가 있다면,
+			 		위의 두 XXXObject를 재정의해줄 필요가 있다.
+			 		재정의를 할때, 직전 실행 코드에 Parent의 field1를 읽는 코드를 넣어주면 된다.
+			 		

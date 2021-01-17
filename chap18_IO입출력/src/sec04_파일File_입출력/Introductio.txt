@@ -1,0 +1,122 @@
+File 클래스
+	파일 시스템의 파일을 표현하는 클래스
+		파일 크기, 파일 속성, 파일 이름 등의 정보 제공
+		파일 생성 및 삭제 기능 제공
+		디렉토리를 생성하고 디렉토리에 존재하는 파일 리스트를 얻어내는 기능 제공
+	
+	파일 객체 생성
+		File file = new File("파일경로");
+		File file = new File("디렉토리 경로");
+			//경로 구분자로 \ 또는 / 사용
+			//역슬래시를 표현할때는 \\두번 표시
+			//슬래시는 한 번만 / 표시
+	
+	파일 또는 디렉토리 존재 유무 확인 메소드
+		boolean isExit = file.exits();
+		//파일 객체 생성시, 파일이 없어도 생성은 된다.
+		//하지만, 파일이 없는 객체에 다른 메소드를 호출하려고 하면, 에러가 날 수 있다.
+
+	파일 및 디렉토리 생성 및 삭제 메소드
+		boolean 	creatNewFile()		새로운 파일을 생성
+		boolean 	mkdir()				새로운 디렉토리를 생성
+		boolean		mkdirs()			경로상에 없는 모든 디렉토리를 생성
+		boolean		delete()			파일 또는 디렉토리 삭제
+		//isExit()메소드로 없는 파일 또는 디렉토리임이 확인 되면, 
+		//해당 파일 또는 디렉토리(들)를(을) 생성할 때 
+		//혹은 해당 파일 또는 디렉토리가 있더라도, 그것을 삭제하고 싶을 때 사용하는 메소드들이다.
+		
+	파일 및 디렉토리의 정보를 리턴하는 메소드
+		boolean		canExecute()		실행할 수 있는 파일인지 여부
+		boolean		canRead()			읽을 수 있는 파일인지 여부
+		boolean 	canWrite()			수정 및 저장할 수 있는 파일인지 여부
+		String		getName()			파일의 이름을 리턴
+		String		getParent()			부모 디렉토리를 리턴
+		File 		getParentFile()		부모 디렉토리를 File 객체로 생성 후 리턴
+		String 		getPath()			전체 경로를 리턴
+		boolean 	isDirectory()		디렉토리인지 여부
+		boolean		isFile()			파일인지 여부
+		boolean		isHidden()			숨김 파일인지 여부
+		long		lastModifired()		마지막 수정 날짜 및 시간을 리턴
+		long		length()			파일의 크기 리턴
+		String[]	list()				디렉토리에 포함된 파일 및 서브디렉토리 목록 전부를 String 배열로 리턴
+		String[]	list(FilenameFilter filter)
+										디렉토리에 포함된 파일 및 서브디렉토리 목록 중에서 FilenameFilter에 맞는 것만 String 배열로 리턴
+		File[]		listFiles()			디렉토리에 포함된 파일 및 서브디렉토리 목록 전부를 File배열로 리턴
+		File[]		listFiles(FilenameFilter filter)
+										디렉토리에 포함된 파일 및 서브디렉토리 목록 중에서 FilenameFilter에 맞는 것만 File 배열로 리턴
+										
+FileInputStream
+	파일로부터 바이트 단위로 읽어 들일 때 사용
+		그림, 오디오, 비디오, 텍스트 파일 등 모든 종류의 파일을 읽을 수 있다.
+	
+	객체 생성 방법
+		//방법1
+		FileInputStream fis = new FileInputStream("C:/Temp/image.gif");
+		
+		//방법2
+		File file = new File("C:/Temp/image.gif");
+		FileInputStream fis = new FileInputStream(file);
+		
+			FileInputStream 객체가 생성될 때 파일과 직접 연결
+			만약 파일이 존재하지 않으면 FileNotFoundException 발생
+			try-catch문으로 예외를 처리해야 한다.
+	
+	InputStream의 하위 클래스이므로 사용방법이 InputStream과 동일하다
+
+FileOutputStream
+	파일에 바이트 단위로 데이터를 저장할 때 사용
+		그림, 오디오, 비디오, 텍스트 등 모든 종류의 데이터를 파일로 저장할 수 있다.
+		
+	객체 생성 방법
+		//방법1
+		FileOutputStream fos = new FileOutputStream("C:/Temp/image.gif");
+		
+		//방법2
+		File file = new File("C:/Temp/image.gif");
+		FileOutputStream fis = new FileOutputStream(file);
+		
+			파일이 이미 존재할 경우, 데이터를 출력하게 되면 파일을 덮어쓰게 됨
+			기존 파일 내용 끝에 데이터를 추가해야 하는 경우
+				FileOutputStream fos = new FileOutputStream("C:/Temp/data.txt", true);
+				FileOutputStream fos = new FileOutputStream(file,true);
+					//생성시 두번째 매개값으로 true(덮어씀)를 주면 된다.
+				
+	OutputStream의 하위 클래스이므로 사용방법이 OutputStream과 동일하다
+		
+FileReader
+	텍스트 파일로부터 데이터를 읽어 들일 때 사용
+		문자 단위로 읽기 때문에 텍스트가 아닌 그림, 오디오, 비디오 등의 파일은 읽을 수 없다.
+	
+	객체 생성 방법
+		//방법1
+		FileReader fr = new FileReader("파일경로");
+		
+		//방법2
+		File file = new File("이미 있는 파일의 경로");
+		FileReader fr = new FileReader(file);
+		
+			FileReader객체가 생성될 때 파일과 직접 연결 됨
+			만약 파일이 존재하지 않으면 FileNotFoundException을 발생
+			try-catch문으로 예외 처리를 해야 한다.
+	
+		Reader의 하위 클래스이므로 사용방법이 Reader와 동일하다
+		
+FileWriter
+	텍스트 파일에 문자 데이터를 저장할 때 사용
+		텍스트가 아닌 그림, 오디오, 비디오 등의 데이터를 파일로 저장할 수 없다.
+	
+	객체 생성 방법
+		//방법1
+		FileWriter fw = new FileWriter("파일경로");
+		
+		//방법2
+		File file = new File("이미 있는 파일의 경로");
+		FileWriter fw = new FileWriter(file);
+		
+			파일이 이미 존재할 경우, 데이터를 출력하게 되면 파일을 덮어쓰게 됨
+			기존 파일 내용 끝에 데이터를 추가할 경우
+				FileWriter fw = new FileWriter("파일경로", true);
+				FileWriter fw = new FileWriter(file, true);
+		
+		Writer의 하위 클래스이므로 사용방법이 Writer와 동일하다
+		
