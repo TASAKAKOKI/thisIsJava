@@ -1,0 +1,57 @@
+메인 클래스
+	AppMain.java 메인 클래스
+		public class AppMain extends Application { //javafx.application패키지의 클래스
+			//Application클래스의 start()메소드 재정의
+			@Override
+			public void start(Stage primaryStage) throws Exception {
+				primaryStage.show(); //윈도우 보여주기
+			}
+			
+			public static void main(String[] args) {
+				launch(args); //AppMain 객체 생성 및 메인 윈도우 생성
+			}
+		}
+	
+JavaFX 라이프 사이클
+	라이프 사이클: JavaFX애플리케이션은 내부적으로 호출되는 메소드를 가지고 있는데, 이들은 각 단계에 따라서 순차적으로 호출되는 것
+	
+				실행 스레드				호출되는 메소드	
+
+		main							Application.launch()
+											|
+		JavaFX Application Thread		기본 생성자 	(메인 객체 생성)
+											|
+
+		JavaFX Launcher					init()		(Application클래스의 메소드)
+											|
+		JavaFX Application Thread		start()		(UI생성 및 메인 윈도우 창 실행)
+											|
+										   사용
+		
+		JavaFX Application Thread		Platform.exit() 호출 또는 마지막 Stage 닫힘(종료버튼 클릭)
+											|
+		JavaFX Application Thread		stop()		
+											|
+										   종료
+										  
+메인 클래스 실행 매개값 얻기
+	java AppMain --ip=192.168.0.5 --port=50001
+	
+	init()메소드에서 다음 두가지 방법으로 매개값을 얻을 수 있다.
+		Parameters params = getParameters();
+		List<String> list = params.getRaw(); //방법1	--ip-xxx.xxx.xxx.xxx와 --port=xxxxx를 각각 하나의 raw로 여기고 두개를 얻는다.
+		Map<String,String> map = params.getNamed();	//방법2 ip,port를 키로 해서, 값을 저장한 entry객체를 얻는다.
+		
+무대와 장면
+	무대(Stage)는 하나의 장면을 가질 수 있다.
+	장면은 javafx.scene.Scene으로 표현한다.
+		Scene scene = new Scene(Parent root);
+		primaryStage.setScene(scene);
+		primaryStage.show();
+					Stage(윈도우)					:하나의 윈도우에는 하나의 장면만 보여줄 수 있다.
+					ㄴ	Scene(장면)
+						ㄴ	Parent(루트 컨테이너) 	;실제 장면을 가지고 있는 컨테이너
+							ㄴ	Label(UI 컨트롤)		;
+							ㄴ	Button(UI 컨트롤)
+							
+ㅁ

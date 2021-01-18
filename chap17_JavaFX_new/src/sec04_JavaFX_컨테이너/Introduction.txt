@@ -1,0 +1,52 @@
+AnchorPane 컨테이너
+	AnchorPane 컨테이너는 AnchorPane의 좌상단(0,0)을 기준으로 컨트롤을 좌표로 배치한다.
+	컨트롤 좌표는 좌상단(layoutX,layoutY)값을 말하는데, (0,0)에서 떨어진 거리이다.
+	
+	AnchorPane에서 사용할 수 있는 주요 설정은 다음과 같다.
+		태그 및 속성		설명				적용
+		prefWidth		폭을 설정			AnchorPane
+		prefHeight		높이를 설정		AnchorPane
+		layoutX			컨트롤의 X 좌표	컨트롤
+		layoutY			컨트롤의 Y 좌표	컨트롤
+		<children>		컨트롤을 포함		AnchorPane
+		//<children>이라는 태그에다가 컨트롤에 대한 태그를 작성하면 AnchorPane에 추가할 수 있다.
+		//AnchorPane컨테이너를 이용할 때는 SceneBuilder를 이용하는 것이 편리하다.					
+HBox와 VBox 컨테이너
+	수평과 수직으로 컨트롤을 배치하는 컨테이너
+	HBox는 컨트롤의 높이는 HBox의 높이만큼 확장하고, 컨트롤의 폭은 유지
+	VBox는 컨트롤의 폭은 VBox의 폭만큼 확장하고, 컨트롤의 높이는 유지
+	
+	HBox와 VBox에서 사용할 수 있는 주요 설정은 다음과 같다
+			태그 및 속성						설명								적용
+		prefWidth/prefHight					폭/높이를 설정						HBox/VBox
+		
+		alignment							컨트롤의 정렬을 설정					HBox/VBox
+		spacing								컨트롤의 간격을 설정					HBox/VBox
+		
+		fillWidth/fillHeight				컨트롤의 폭/높이 확장 여부 설정		HBox/VBox
+			(true이면 확장 가능)					
+		
+		<children>							컨트롤을 XBox에 포함				HBox/VBox
+		
+		<HBox.hgrow>						HBox의 남은 폭을 컨트롤이 채움		HBox
+			<Priority fx:constant="ALWAYS"/>
+		<HBox.hgrow>
+		<VBox.hgrow>						VBox의 남은 높이를 컨트롤이 채움		VBox
+			<Priority fx:constant="ALWAYS"/>	
+		<VBox.hgrow>
+	
+BorderPane 컨테이너
+	top, bottom, left, right, center 셀에 컨트롤을 배치하는 컨테이너
+	각 셀에는 하나의 컨트롤 또는 컨테이너만 배치할 수 있다.
+	top, bottom, left, right에 배치하지 않으면 center에 배치된 컨트롤이 확장된다
+	
+	다음은 BorderPane에서 사용할 수 있는 태그 및 속성들이다.
+			태그 및 속성						설명								적용
+		prefWidth/prefHight					폭/높이를 설정						BorderPane
+		<top>								top에 배치될 컨트롤을 포함			BorderPane
+		<bottom>							bottom에 배치될 컨트롤을 포함		BorderPane	
+		<right>								right에 배치될 컨트롤을 포함			BorderPane
+		<left>								left에 배치될 컨트롤을 포함			BorderPane
+	
+FlowPane컨테이너
+	행으로 컨트롤을 배치화되 공간이 부족하면 새로운 행에 배치하는 컨테이너

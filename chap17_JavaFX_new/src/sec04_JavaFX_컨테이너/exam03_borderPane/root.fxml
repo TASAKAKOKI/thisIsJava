@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<!-- 컨테이너를 여러개 사용할 때는, BorderPane과 같이 하나만 명시하지 말고, 전체컨테이너를 import하도록 *를 적어준다. -->
+
+<!-- 폭과 높이는 BorderPane에서 줘도 되고, AppMain에서 primaryStage에서 줘도 괜찮다. -->
+<!-- prefXXX는 선호한다는 것이지 꼭 지켜지지 않아도 되므로, 사용자가 확장 축소 시킬 수 있다. -->
+<BorderPane xmlns:fx="http://javafx.com/fxml">
+	<top>
+		<ToolBar>
+			<items>
+				<Button text="Button1"/>
+				<Button text="Button2"/>
+			</items>
+		</ToolBar>
+	</top>
+
+	<center>
+		<TextArea />			
+	</center>
+	<bottom>
+		<BorderPane xmlns:fx="http://javafx.com/fxml">
+			<center>
+				<TextField />
+			</center>
+			<right>
+				<Button text="Button3" />
+			</right>
+		</BorderPane>
+	</bottom>
+</BorderPane>

@@ -1,0 +1,192 @@
+		FXML 레이아웃
+레이아웃
+	Scene에는 다양한 컨트롤이 포함되는데 이들을 배치하는 것이 레이아웃이다.
+	
+	프로그램적 레이아웃
+		자바 코드로만 개발하기 때문에 다른 언어를 익힐 필요가 없다.
+		코드를 잘 정리하지 않으면 난해한 프로그램이 될 확률이 높아진다.
+		디자이너와 협력해서 개발하는 것이 어렵다.
+		간단한 레이아웃 변경이나 스타일 변경이라도 자바 소스를 수정하고 재컴파일해야 하는 불편함이 있다.
+	
+	FXML 레이아웃
+		FXML은 XML 기반의 마크업 언어이다.
+		JavaFX UI 레이아웃을 자바 코드에서 분리해서 태그로 선언하는 방법을 제공한다.
+		웹 애플리케이션 및 안드로이드(Android)앱을 개발하는 방법과 유사하다.
+		디자이너와 협업이 가능하다.
+		간단한 레이아웃 변경이나 스타일 변경 시 자바 소스를 수정할 필요가 없다.
+		레이아웃이 비슷한 장면(Scene)들간에 재사용이 가능하다.
+	
+레이아웃 여백: margin과 padding
+		HBox의 패딩									Button의 마진
+	HBox의 내부 간격을 설정함						HBox의 Button콘트롤의 외부 간격을 설정함
+			
+	HBox hbox = new HBox();						Button button = new Button();
+	hbox.setPadding(new Insets(50));			HBox.setMargin(button, new Insets(50));
+	
+	<HBox>										<Button>
+		<padding>									<HBox.margin>
+			<Insets topRightBottomLeft="50"/>			<Insets topRightBottomLeft="50"/>
+		</padding>									</HBox.margin>
+	</HBox>										</Button>
+	
+	마진과 패딩은 적용하는 위치에 따라 top,bottom,left,right로 구분된다.
+
+	마진과 패딩값은 javafx.geometry.Insets 객체로 제공해야 하는데 다음과 같이 생성한다.
+		//top,right,bottom,left를 모두 동일한 값(double타입)으로 설정할 때	
+		new Insets(double topRightBottomLeft);
+		
+		//top,right,bottom,left를 각각 다른 값(double 타입)으로 설정할 때,
+		new Insets(double top, double right, double bottom, double left);
+	
+FXML 작성 규칙
+	FXML 태그는 자바코드로 변환되어 실행되기 때문에 자바코드와 매핑 관계가 존재한다.
+	매핑관계만 잘 이해하면 JavaFX API를 참조해서 FXML 태그를 쉽게 작성 할 수 있다.
+			프로그램적 레이아웃 자바 코드										FXML 레이아웃 태그
+		HBox hbox = new HBox();
+		hbox.setPadding(new Insets(10,10,10,10));
+		hbox.setSpacing(10);
+		
+		
+		TextField textField = new TextField();
+		textField.setPrefWidth(200);
+		
+		Button button = new Button();
+		button.setText("확인");
+		
+		
+		ObservableList list = hbox.getChildren();
+		list.add(textField);
+		list.add(button);
+		
+	패키지 선언
+			자바코드									FXML 태그
+		import 패키지명							<?import 패키지명?>	
+		
+		xml선언 : fxml파일도 xml파일이므로, xml선언부가 필요하다.
+			<?xml version="1.0" encoding="UTF-8"?>
+			
+		루트컨테이너선언:	NameSpace선언부가 있다. 
+						NameSpace란?: 태그에게 부여되는 고유의 이름
+						xmlns:fx="고유이름" 으로 작성한다.
+						
+	태그 선언
+		FXML 태그는 <와 > 사이에 태그 이름을 작성한 것인데,
+		반드시 시작 태그(<)가 있으면, 끝 태그(>)도 있어야 한다.
+		그렇지 않으면, javax.xml.stream.XMLStreamException 예외가 발생한다.
+			<태그이름> .... </태그이름>
+		
+		시작 태그와 끝 태그 사이에는 태그 내용이 작성되는데,
+		태그 내용이 필요없을 경우에는 다음과 같이 시작 태그 끝에 />를 붙여야 한다.
+			<태그이름/>
+		
+		태그 이름은 JavaFX의 클래스명이거나, Setter메소드명이 될 수 있다.
+		다음 표에서 Button컨트롤을 자바 코드로 작성한 것과 FXML 태그로 작성한 것을 비교해보면 쉽게 이해가 될 것이다.
+			Button button = new Button();		->	<Button>				//자바코드의 JavaFX 클래스명이 태그이름으로 쓰인다.
+			button.setText("확인");						<text>확인</text> 	//자바코드의 Setter메소드이름에서 set을 뺀 것이 태그이름으로 쓰인다.
+													</Button>
+	
+	속성 선언
+		FXML 태그는 다음과 같이 속성을 가질 수 있다.
+		속성값은 반드시 큰따옴표("") 또는 작음 따옴표('')로 반드시 감싸야 한다.
+		그렇지 않으면, javax.xml.stream.XMLStreamException 예외가 발생한다.
+			<태그이름 속석명="값" 속성명='값'> ... </태그이름>
+		
+		속성명은 Setter 메소드명이 오는데, 모든 Setter가 사용될 수 있는 것은 아니고,
+			기본 타입(boolean, byte, short, char, int, long, float, double)값을 세팅하거나,
+			String(문자열)을 세팅하는 Setter만 올 수 있다.
+			예를 들어, Button의 글자를 설정할 때 setText() Setter메소드를 사용하는데,
+			매개값이 문자열이므로 다음과 같이 text 속성으로 작성할 수 있다.
+					자바코드								FXML(Setter 태그)			FXML(Setter 속성)	
+				Button btn = new Button();			<Button>					<Button text="확인"/>	
+				button.setText("확인");					<text>확인</text>
+													</Button>
+													
+	객체 선언 
+		1. <JavaFX클래스명 속성="값">
+			일반적으로 다음과 같이 클래스명으로 태그를 작성하면 new 연산자로 기본생성자를 호출해서 객체가 생성된다.
+				<클래스명>
+			
+			만약 생성자에 매개변수가 있고, 매개변수가 @NamedArg(javafx.beans.NamedArg) 어노테이션이 적용되어 있다면 속성명이나 자식 태그로 작성할 수 있다.
+				<클래스명 속성="값">					<클래스명>
+														<매개변수>값</매개변수>
+													</클래스명>
+					자바코드										FXML
+				HBox hbox = new HBox();						<HBox>
+				hbox.setPadding(new Insets(10,10,10,10));		<padding>
+																	<Insets top="10" right="10" bottom="10" left="10/>
+																</padding>
+															</HBox>
+		
+		2. <JavaFX클래스명 fx:value="값">
+				new 연산자로 객체를 생성하지 않고, 클래스가 가지고 있는 valueOf(String) 메소드를 사용할 수도 있다.
+				예를 들어, String, Integer, Double, Boolean 클래스는 valueOf(String)을 호출해서 객체를 생성할 수 있다.
+				이 경우 다음과 같이 FXML 태그를 작성할 수 있다.
+					<클래스 fx:value="값"/>
+				
+					자바코드										FXML
+				String.valueOf("Hello, World!");				<String fx:value="Hello, World!"/>
+				Integer.valueOf("1");							<Integer fx:value="1"/>
+				Double.valueOf("1.0");							<Double fx:value="1.0"/>
+				Boolean.valueOf("true");						<Boolean fx:value="true"/>
+			
+		3. <JavaFX클래스명 fx:constant="상수">
+				클래스에 정의된 상수값을 얻고 싶을 경우에는 다음과 같이 FXML 태그를 작성할 수 있다.
+					<클래스 fx:constant="상수"/>
+					
+					자바코드										FXML
+				Button btn = new Button();						<Button>
+				btn.setMaxWidth(									<maxWidth>
+					Double.MAX_VALUE									<Double fx:constant="MAX
+				);													</maxWidth>
+																</Button>
+												
+		4. <JavaFX클래스명 fx:factory="정적메소드">
+				어떤 클래스는 new 연산자로 객체를 생성할 수 없고,
+				정적 메소드로 객체를 얻어야 하는 경우도 있다.(팩토리메소드)
+				이 경우 다음과 같이 FXML 태그를 작성할 수 있다.
+					<클래스 fx:factory="정적메소드">
+					
+					자바코드										FXML
+				ComboBox combo = new ComboBox();				<ComboBox>
+				combo.setItems(										<items>
+					FXCollections, observableArrayList(					<FXCollections fx:factory="observableArrayList">
+						"공개", "비공개"										<String fx:value="공개"/>
+					)														<String fx:value="비공개"/>
+				);														</FXCollections>
+																	</items>
+																</ComboBox>
+				//setItems()의 매개값은 FXCollections클래스의 observableArrayList()정적메소드를 통해서 얻은 Collection 객체가 주어진다.
+				//setItems(클래스명, 그 클래스의 정적메소드)
+															
+FXML 로딩과 Scene 생성
+	FXML 로딩
+		FXML 파일을 읽어들여 선언된 내용을 객체화하는 것을 말한다.
+		FXMLLoader의 load()메소드를 이용하여 로딩한다.
+			//방법1_ FXMLLoader의 load()정적메소드를 이용
+			Parent root = FXMLLoader.load(getClass().getResource("fileName.fxml"));
+			
+			//방법2_FXMLLoader 객체를 생성하여, instance메소드인 load()를 실행
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("fileName.fxml"));
+			Parent root = (Parent)loader.load();
+			
+				//load()메소드의 매개값;
+					url매개값:fxml파일의 위치정보를 갖고 있는 url
+						url를 얻는 법
+						 	getClass()현재 클래스가 존재하는 위치에서
+						 	getResource()에 매개값으로 주어진 문자열을 이름으로 갖는 파일을 찾아라.
+				
+				//controller 객체를 얻기 위해서는,
+				//반드시 FXMLLoader객체가 필요하다.
+				
+		load()가 리턴하는 실제 객체는 FXML파일에서 루트 태그로 선언된 컨테이너이다.
+			HBox hbox = (HBox) FXMLLoader.load(getClass().getResource("fileName.fxml"));
+		
+	Scene 객체 생성
+		FXML 로딩 후 얻은 루트 컨테이너는 Scene을 생성할 때 매개값으로 사용된다.
+			Scene scene = new Scene(root);
+				//Scene생성시 매개값으로 Parent객체를 전달한다
+	
+JavaFX Scene Builder
+	드래그 앤 드롭 방식의 WYSIWYG 디자인 툴
+	자동으로 FXML 파일 생성
+
