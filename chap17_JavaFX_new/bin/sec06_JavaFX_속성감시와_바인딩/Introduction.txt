@@ -1,0 +1,66 @@
+속성 감시
+	컨트롤의 속성값 변화를 감시하는 ChangeListener를 등록할 수 있다.
+	속성값에 변화가 생기면 ChangeListener의 change()메소드가 호출된다.
+	JavaFX 컨트롤 속성 코드
+		java.beans.property.XXXProperty 타입의 field를 선언
+		Setter와 Getter 메소드를 정의
+		XXXProperty를 리턴하는 fieldProperty() 메소드를 선언
+			//java코드
+			private StringProperty text = new SimpleStringProperty();			//String을 저장할 수 있는 XXXProperty타입
+			public void setText(String newValue) { text.set(newValue); }		//Setter와 
+			public String getText() { return text.get(); }						//Getter를 작성
+			public StringProperty textProperty() { return text; }				//XXXProperty를 반환
+	리스너 등록
+		textProperty().addListener( new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extneds String> observable,
+								String oldValue, String newValue) {
+			}
+		});
+		
+	속성감시에 있어서 중요한 메소드가 바로, textProperty()이다. 
+	textProperty()는 속성감시를 위해 사용되는 메소드이다.
+	XXXProperty객체는 속성을 감시하는 Listener를 등록할 수 있는 기능을 제공한다.
+	
+	가령, 어떤 컨트롤의 text필드의 속성이 변경되었는지를 알고자 한다면, 
+	XXXProperty객체에 Listener를 등록하여야 한다.
+	//https://docs.oracle.com/javase/8/javafx/api/toc.htm를 참조하면, 
+	//javfx.beans.property패키지의 다양한 XXXProperty를 확인 할 수 있다.
+	
+속성 바인드
+	두 컨트롤의 속성을 서로 연결하는 것을 말한다.
+	바인드된 속성들은 하나가 변경되면 자동적으로 다른 하나도 변경된다.
+	
+	단방향 바인드
+		TextArea textArea1 = new TextArea();
+		TextArea textArea2 = new TextArea();
+		textArea2.textProperty().bind(textArea1.textPropert());
+	
+	양방향 바인드
+		textArea2.textProperty().bindBidirectional(textArea1.textProperty());
+		Bindings.bindBidirectional(textArea1.textProperty(), textArea2.textProperty());
+		
+	언바인드
+		//단방향 해제
+		textArea2.textProperty().unbind(); 					
+		
+		//양방향 해제
+		textArea2.textProperty().unbindBidirectional(text.Area1.textProperty());
+		Bindings.unbindBidirectional(textArea1.textProperty(), textArea2.textProperty());	
+		
+Bindings클래스
+	속성을 연산하거나, 다른 타입으로 변환한 후 바인딩하는 기능을 제공하는 클래스
+				메소드							::::::	설명
+		add,substract,multiply,divide			속성값을 덧셈,뺄셈,곱셈,나눗셈 연산을 수행하고 바인딩함
+		max,min									속성값과 어떤 수를 비교해서 최대, 최소값을 얻고 바인딩함
+		greaterThan,greaterThanOrEqual			속성값이 어떤 값보다 큰지, 같거나 큰지를 조사하고, true/false로 변환하여 바인딩함
+		lessThan,lessThanOrEqual				속성값이 어떤 값과 적거나, 같거나 적은지를 조사하여 true/false로 변환하여 바인딩함
+		equal, notEquals						속성값이 어떤 값과 같은지, 다른지를 조사해서 true/false로 변환하여 바인딩함
+		isEmpty, isNotEmpty						속성값이 비어있는지, 아닌지를 조사해서 true/false로 변환하여 바인딩함
+		isNull, isNotNull						속성값이 null 또는 not null인지를 조사해서 true/false로 변환하여 바인딩함
+		length									속성값이 문자열일 경우 문자수를 얻어 바인딩함
+		size									속성 타입이 배열, List, Map, Set일 경우 요소수를 얻어 바인딩함
+		and, or 								속성값이 boolean일 경우, 논리곱, 논리합을 얻어 바인딩함
+		not										속성값이 boolean일 경우, 반대값으로 바인딩함
+		convert									속성값을 문자열로 변환해서 바인딩함
+		valueAt									속성이 List, Map일 경우 해당 인덱스 또는 키의 값을 얻어 바인딩함

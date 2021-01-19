@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+	prefWidth="300" prefHeight="200" spacing="10"
+	fx:controller="sec06_JavaFX_속성감시와_바인딩.exam02_property_binding.RootController">
+	
+	<padding>
+		<Insets topRightBottomLeft="10"/>
+	</padding>
+
+	<children>
+		<Label text="textArea1"/>
+		<TextArea fx:id="textArea1"/>
+		<Label text="textArea2"/>
+		<TextArea fx:id="textArea2"/>
+	</children>
+</VBox>

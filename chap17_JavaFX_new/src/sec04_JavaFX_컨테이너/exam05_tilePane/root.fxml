@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.TilePane?>
+
+<TilePane hgap="10.0" prefTileHeight="100" prefTileWidth="100" vgap="10.0" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/15.0.1">
+
+	<children>
+		<Button minHeight="100.0" minWidth="100.0" text="Button1">
+         <TilePane.margin>
+            <Insets />
+         </TilePane.margin></Button>
+		<Button minHeight="100.0" minWidth="100.0" text="Button2" />
+		<Button minHeight="100.0" minWidth="100.0" text="Button3" />
+		<Button minHeight="100.0" minWidth="100.0" text="Button4" />
+		<Button minHeight="100.0" minWidth="100.0" text="Button5" />
+		<!-- 매개타입이 image객체이므로 속성으로 작성할 수 없고, image 태그로 작성 -->
+		<ImageView fitHeight="100.0" fitWidth="100.0">
+			<image>
+				<Image url="@images/house1.jpg" />
+			</image>
+		</ImageView>
+		<ImageView fitHeight="100.0" fitWidth="100.0">
+			<image>
+				<Image url="@images/house2.jpg" />
+			</image>
+		</ImageView>
+		<ImageView fitHeight="100.0" fitWidth="100.0">
+			<image>
+				<Image url="@images/house3.jpg" />
+			</image>
+		</ImageView>
+		<ImageView fitHeight="100.0" fitWidth="100.0">
+			<image>
+				<Image url="@images/house4.jpg" />
+			</image>
+		</ImageView>
+		<ImageView fitHeight="100.0" fitWidth="100.0">
+			<image>
+				<Image url="@images/house5.jpg" />
+			</image>
+		</ImageView>
+	</children>
+   <padding>
+      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+   </padding>
+</TilePane>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.image.Image?>
+<StackPane xmlns:fx="http://javafx.com/fxml/">
+	<children>
+		<ImageView fitWidth="400" fitHeight="200" preserveRatio="true"> <!-- preserveRatio는 원래 이미지의 비율을 유지할 것인지 아닌지를 결정한다 -->
+					<!-- fitWidth나 fitHeight중 한 쪽을 정해놓고, 다른 쪽을 비율에 맞추고 싶을 땐, true. 크기에 완전히 맞춰서 비율 상관없다면, false를 주면 된다. -->
+			<image>
+				<Image url="@images/house.jpg"/>
+			</image>
+		</ImageView>
+		
+		<ImageView fitHeight="200" preserveRatio="true">
+			<image>
+				<Image url="@images/duke.png"/>
+			</image>
+		</ImageView>
+	</children>
+</StackPane>
