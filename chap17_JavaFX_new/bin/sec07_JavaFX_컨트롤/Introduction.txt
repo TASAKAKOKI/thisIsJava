@@ -1,0 +1,44 @@
+JavaFX 컨트롤
+	JavaFX는 다양한 UI컨트롤을 제공하고 있다.
+	버튼 컨트롤, 입력 컨트롤, 뷰 컨트롤, 미디어 컨트롤, 챠트 컨트롤 등
+	
+버튼 컨트롤
+	마우스로 클릭을 할 수 있는 컨트롤
+	ButtonBase를 상속하는 하위 컨트롤
+	Button, CheckBox, RadioButton, ToggleButton, Hyperlink 등
+	
+	Button 컨트롤
+		//Button에는 setGraphic()이라는 Setter가 있는데, 매개값은 ImageView객체이므로,
+		//속성으로 선언못하고, 태그로 작성하여야 한다.
+		<Button text="버튼"> 
+			<graphic>
+				<ImageView>
+					<Image url="@images/history_view.jpg"/>
+				</ImageView>
+			</graphic>
+		</Button>
+	
+	CheckBox 컨트롤
+		<CheckBox text="라벨1" userData="값1"/> //userData는 체크시 내부적으로 사용되는 값, text는 사용자에게 보여쥐는 문구
+		<CheckBox text="라벨2" userData="값2" selected="true"/> //selected속성은 디폴트 설정여부를 위해 사용된다.
+		
+	RadioButton 컨트롤
+		<fx:define>
+			<ToggleGroup fx:id="groupName"/>
+		</fx:define>
+			//RadioButton, ToggleButton에는 toggleGroup속성이 있는데, 
+			//같은 toggleGroup을 참조하게 되면, 하나의 그룹으로 묶이며,
+			//같은 그룹 내에서는 하나의 컨트롤만 선택되는 효과가 있다.
+			//참조할 ToggleGroup객체는 <fx:define>태그를 사용해서 <ToggleGroup fx:id="groupName"/>으로 작성하고,
+			//RadioButton이나 ToggleButon의 toggleGroup속성에서 groupName 앞에 $를 붙여 참조한다.
+		<RadioButton text="라벨1" userData="값1" toggleGroup="$groupName" />
+		<RadioButton text="라벨2" userData="값2" toggleGroup="$groupName" selected="true" />
+
+		groupName.selectedToggleProperty().addListener( new ChangeListener<Toggle>() {
+			@Override
+			public void changed(ObservableValue<? extends Toggle> observable,
+								Toggle oldValue, Toggle newValue) {...}
+		});
+			//RadioButton 또는 ToggleButton 그룹 내에서 선택 변경을 감시하고 싶다면,
+			//ToggleGroup의 selectedToggle속성에 다음과 같이 ChangeListener를 등록하면 된다.
+			

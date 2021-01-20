@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>			<!-- BorderPane, HBox, VBox 등이 포함된 패키지 -->
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>			<!-- Button, CheckBox, Separator, RadioButton, ToggleGroup 등이 포함된 패키지 -->
+<?import javafx.scene.image.*?>				<!-- ImageView, Image 등이 포함된 패키지 -->
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+	prefWidth="420" prefHeight="150"
+	fx:controller="sec07_JavaFX_컨트롤.exam01_button.RootController">
+	
+	<padding>
+		<Insets topRightBottomLeft="10"/>
+	</padding>
+	
+	<center>
+		<HBox alignment="CENTER" prefWidth="200" prefHeight="100" spacing="10">
+			<children>
+				<VBox prefWidth="100" prefHeight="200" spacing="20" alignment="CENTER">
+					<children>
+						<CheckBox fx:id="chk1" text="안경" onAction="#handleChkAction"/>				
+						<CheckBox fx:id="chk2" text="모자" onAction="#handleChkAction"/>
+					</children>
+				</VBox>
+				
+				<ImageView fx:id="chkImgView" fitWidth="100" preserveRatio="true">
+					<image>
+						<Image url="@images/woman.jpg"/>
+					</image>
+				</ImageView>
+
+				<Separator orientation="VERTICAL" prefHeight="200"/>
+
+				<VBox prefWidth="150" prefHeight="200" spacing="20" alignment="CENTER_LEFT">
+					<fx:define>
+						<ToggleGroup fx:id="tgGroup"/>
+					</fx:define>
+					
+					<children>
+						<RadioButton text="BubbleChart" toggleGroup="$tgGroup" userData="bubbleChart"/>
+						<RadioButton text="BarChart" toggleGroup="$tgGroup" userData="barChart" selected="true"/>
+						<RadioButton text="AreaChart" toggleGroup="$tgGroup" userData="areaChart"/>
+					</children>
+				</VBox>
+				
+				<ImageView fx:id="chkChartView" fitWidth="100" preserveRatio="true">
+					<image>
+						<Image url="@images/barChart.png"/>
+					</image>
+				</ImageView>
+			</children>
+		</HBox>
+	</center>
+	
+	<bottom>
+		<Button BorderPane.alignment="CENTER" onAction="#handleBtnExitAction">
+			<graphic>
+				<ImageView fitWidth="100" preserveRatio="true">
+					<Image url="@images/close.png" />
+				</ImageView>
+			</graphic>
+			
+			<BorderPane.margin>
+				<Insets top="20"/>
+			</BorderPane.margin>
+		</Button>
+	</bottom>
+
+</BorderPane>
