@@ -1,0 +1,21 @@
+		JavaFX_다이얼로그
+다이얼로그(Dialog)
+	주 윈도우에서 알림 또는 사용자의 입력을 위해서 실행되는 서브 윈도우
+	자체적으로 실행될 수 없고, 주 윈도우(소유자 윈도우)에 의해서 실행됨
+	모달과 모달리스
+		모달 다이얼로그는 다이얼로그는 닫기 전까지 소유자 윈도우를 사용할 수 없다.
+		모달리스 다이얼로그는 소유자 윈도우를 계속 사용할 수 있다.
+	JavaFX에서 제공하는 다이얼로그 종류
+		FileChooser, DirectoryChooser, Popup, 커스텀 다이얼로그 등
+	
+FileChooser
+	FileChooser fileChooser = new FileChooser();
+	fileChooser.getExtensionFilters().addAll(
+		new ExtensionFilter("Text Files", "*.txt"),
+		new ExtensionFilter("Image Files", "*.png", "*.jpg", "*.gif"),
+		new ExtensionFilter("Audio Files", "*.wav", "*.mp3", "*.aac"),
+		new ExtensionFilter("All Files", "*.*")
+	);
+	File selectedFile = fileChooser.showOpenDialog(primaryStage);
+	String selectedFilePath = selectedFile.getPath();
+

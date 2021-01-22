@@ -1,0 +1,52 @@
+메뉴바
+	MenuBar에는 Menu들이 배치된다.
+	Menu에는 메뉴 아이템들이 추가된다.
+		MenuItem,
+		CheckMenuItem,
+		RadioMenuItem,
+		CustomMenuItem,
+		SeparatorMenuItem,
+		Menu(서브 메뉴)
+		
+			<MenuBar>
+				<menus>
+					<Menu text="파일"> ...</Menu>
+					<Menu text="편집"> ...</Menu>
+				</menus>
+			</MenuBar>
+		
+		<Menu text="파일>
+			<items>
+				<MenuItem text="새로 만들기" onAction="#handleNew" >
+					<accelerator>
+						<KeyCodeCombination alt="DOWN" code="N" control="UP" meta="UP"
+											shift="DOWN" shortcut="UP" />
+						//단축키를 설정하는 법
+						//"DOWN"누를 상태를 의미 / "UP" 누르지 않은 상태를 의미	
+					</accelerator>
+					<graphic>
+						<ImageView>
+							<image>
+								<Image url="@icons/new.png" />
+							</image>
+						</ImageView>					
+					</graphic>
+					//graphic 메뉴의 이미지를 설정하는 코드
+				</MenuItem>
+			</items>
+		</Menu>
+툴바
+	Toolbar 컨트롤은 UI컨트롤이면서 컨테이너이기도 하다.
+	Button이 추가되지만, ComboBox와 같은 다른 컨트롤도 배치할 수 있다.
+	
+	<ToolBar>
+		<items>
+			<Button onAction="#handleNew">
+				<graphic>
+					<IamgeView><image><Image url="@icons/new.png"/></image></ImageView>
+				</graphic>
+			</Button>
+			//툴바에 들어가는 버튼은 대개 텍스트 없이 이미지만으로 이뤄지므로, text속성은 없고, graphic태그만 넣어준다.
+		</items>
+	</ToolBar>
+	

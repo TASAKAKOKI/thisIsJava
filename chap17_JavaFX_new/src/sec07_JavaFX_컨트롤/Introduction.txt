@@ -41,4 +41,250 @@ JavaFX 컨트롤
 		});
 			//RadioButton 또는 ToggleButton 그룹 내에서 선택 변경을 감시하고 싶다면,
 			//ToggleGroup의 selectedToggle속성에 다음과 같이 ChangeListener를 등록하면 된다.
+		
+입력 컨트롤
+	TextField, PasswordField, TextArea, ComboBox, DatePicker, ColorPicker, HTMLEditor 등이 있다.
+	Label
+		:입력컨트롤의 제목부분을 표시해주는 컨트롤
+	TextField
+		:입력된 한줄의 문자열 표시
+	PasswordField
+		:입력된 문자열이 *로 표시
+	TextArea
+		:여러줄 입력 가능
+	ComboBox
+		:DropDownList라고도 한다.
+		:메뉴를 누르면 아래로 목록이 펼쳐지고, 목록중 하나를 선택 가능
+	DatePicker
+		:날짜를 선택하는 입력 컨트롤
+	ColorPicker
+		:색깔을 선택하는 입력 컨트롤
+	HTMLEditor
+		:워드를 작성하듯이 문자를 입력하면,
+		내부적으로 html문서가 만들어지는 editor 컨트롤
+		내부적으로 글자마다 스타일을 줄 수 있다.
+		
+	
+뷰 컨트롤
+	ListView, TableView, ImageView 등이 있다.
+	
+	ImageView 컨트롤
+		<ImageView fitWidth="폭" fitHeight="높이" preserveRatio="true"/>
+			//preserveRatio=원래의 이미지의 비율을 기준으로 폭/높이 중 하나를 기준으로 비율 유지
+	
+	ListView 컨트롤
+		<ListView prefWidth="폭" prefHeight="높이"/>
+		View는 fxml에 직접 작성하기 보다는, Controller에서 데이터를 생성해서, View컨트롤에 제공하는 것이 일반적
+		고정적인 데이터가 아니라면, 실행 도중에 생성한다.
+			listView.setItem(FXCollections.observableArrayList("swing","javaFX"));
+	
+		//고정적 데이터의 경우 fxml에서 작성
+		<ListView fx:id="listView" prefHeight="100" prefWidth="100">
+			<items>
+				<FXCollections fx:factory="observableArrayList">
+					<String fx:value="Swing"/>
+					<String fx:value="JavaFX"/>
+				</FXCollections>
+			</items>			
+		</ListView>
+		
+		//리스트뷰에서 선택된 항목을 얻는 방법_속성감시로 얻어낸다.
+		listView.getSelectionModel().selectedItemProperty().addListener(
+			new ChangeListener<String>() {
+				@Override
+				public void changed(ObservableValue<? extends String> observable,
+									String oldValue, String newValue)
+			}
+		);
+	
+	TableView 컨트롤
+		public class Phone {
+			private SimpleStringProperty smartPhone;
+			private SimpleStringProperty image;
 			
+			public Phone(String smartPhone, String image) {
+				this.smartPhone = new SimpleStringProperty(smartPhone);
+				this.image = new SimpleStringProperty(image);
+			}
+			
+			public String getSmartPhone() {
+				return smartPhone.get();
+			}
+			public void setSmartPhone(String smartPhone) {
+				this.smartPhone.set(smartPhone);
+			}
+			public String getImge() {
+				return image.get();
+			}
+			public void setImage(String image) {
+				this.image.set(image);
+			}
+		}
+		
+		
+		<TableView prefHeight="100" prefWidth="300">
+			<column>
+				<TableColumn prefWidth="" text=""/>				
+				<TableColumn prefWidth="" text=""/>
+			</column>
+		</TableView>
+		
+		TableColumn tcSmartPhone = tableView.getColumns().get(0);
+		tcSmartPhone.setCellValueFactory( new PropertyValueFactory("smartPhone") );
+		tcSmartPhone.setStyle("-fx:alignment: CENTER;");
+		
+		ObservableList phoneList = FXCollections.observableArrayList(
+			new Phone("갤럭시 S1", phone01.png"),
+			new Phone("갤럭시 S2", phone02.png"),
+			new Phone("갤럭시 S3", phone03.png")
+		);
+		
+		tableView.getSelectionModel().selectedItemProperty().addListener(
+			new ChangeListener<Phone>() {
+				@Override
+				public void changed(ObservableValue<? extends Phone> observable,
+									Phone oldValue, Phone newValue) {...}
+			}
+		);
+		
+미디어 컨트롤
+	MediaView
+	Slider
+		보여주는 용도로도 사용가능하며, 사용자가 수정도 가능하다.
+	ProgressBar와 ProgressIndicator
+		변경할 수 없고, 보여주는 용도로만 사용
+		
+	MediaView컨트롤
+		비디오를 보여주는 용도로만 사용되기 때문에 특별한 UI(제어 컨트롤)이 없다.
+			<MediaView fitHeight="200.0" fitWidth="300.0" preservaRatio="false"/>
+			
+	MediaPlayer
+		비디오 뿐만 아니라 오디오도 재생하는 기능 제공
+			Media media = new Media(getClass().getResource("media/bigbuck.m4v").toString());
+			MediaPlayer mediaPlayer = new MediaPlayer(media);
+			
+			mediaView.setMediaPlayer(mediaPlayer);
+		상태와 상태 변경 메소드
+				다음상태	::	READY		::	PAUSED	::		PLAYING		::	STALLED		::	STOPPED
+			현재상태
+			UNKNOWN			pre-roll		
+			**READY								 		autoplay; play() 
+			PAUSED											play()							stop()
+			PLAYING							pause()						buffering data		stop()
+			STALLED							pause()		 data buffered						stop()
+			STOPPED							pause()			play() 
+			
+				//STALL: 네트워크 상황이 좋으면, 미디어 데이터가 버퍼링되어 재생이 이뤄지지만,
+						 네트워크 상황이 안 좋으면, 재생이 멈추는 현상이 발생되는데 그러한 상태를 STALLED상태라고 한다.
+	
+				//Media를 재생하기 위한, MediaPlayer를 만들 때, Player를 생성후 바로 play()메소드를 호출하면 안되고,
+				//MdiaPlyaer가 READY 상태일 때, play()를 호출해야 한다.
+		상태 변경 시 자동 실행 코드
+			상태		::	자동 실행 Runnable 설정 메소드			:: Runnable에 포함될 수 있는 코드
+		  READY			setOnReady(Runnable r)				   -currentTime 속성을 감시
+		  													   -재생 시간을 표시하는 리스너 등록
+		  													   -재생 버튼 활성화
+		  PLAYING		setOnPlaying(Runnable r)			   -멈춤 및 정지 버튼 활성화
+		  PAUSED		setOnPaused(Runnable r)				   -재생 및 정지 버튼 활성화
+		  STOPPED		setOnStopped(Runnable r)			   -재생 버튼 활성화
+		  EndOfMedia	setOnEndOfMedia(Runnable r)			   -재생 버튼 활성화
+		  			//STOPPED상태와 EndOfMedia의 차이:
+		  				STOPPED은 사용자가 멈출 때 되는 상태
+		  				EndOfMedia는 미디어가 정상적으로 끝까지 재생되었을 때 되는 상태
+		  				다음 영상 재생 혹은 다시 처음부터 시작하는 코드를 실행할 때, 이곳에 코드 작성	
+	
+		  mediaPlayer.setOnReady(new Runnable() {
+		  	@Override
+		  	public void run() {
+		  		mediaPlayer.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+		  			@Override
+		  			public void changed(ObservableValue<? extends Duration> observable,
+		  								Duration oldValue, Duration newValue)
+		  				//재생 시간을 표시하는 코드
+		  		});
+		  		//재생 버튼을 활성화 코드 또는 setAutoPlay(true);
+		  	}
+		  });
+				
+	Slider 컨트롤
+		 Track과 Thumb으로 구성
+		 value 속성에는 현재 Thumb의 위치값이 저장
+		 value 속성의 최솟값은 0, 최대값은 100
+		 setShowTickMarks(true)를 호출하면 Tick marks를 표시
+		 setShowTickLabels(true)를 호출하면 Tick label을 표시
+		 
+		 	<Slider prefHeight="" prefWidth="" showTickMarks="" showTickLabels=""/>
+		 	
+		 	sliderVolume.valueProperty().addListener(new ChangeListener<Number>() {
+		 		@Override
+		 		public void changed(ObservableValue<? extends Number> observable,
+		 							Number oldValue, Number newValue) {
+		 			mediaPlayer.setVolume(sliderVolume.getValue() / 100.0);					
+		 				//mediaPlayer의 volume은 0.0~1.0사이의 값이다.
+		 				//이를 맞추기 위해, sliderValue의 0.0~100.0의 값을 100으로 나누어준다.
+				}
+		 	});
+
+	ProgressBar와 ProgressIndiator 컨트롤
+		작업 진행 정도를 표시하는 컨트롤
+		ProgressBar : 수평 막대 모양의 컨트롤
+		ProgressIndicator : 원형 모양의 컨트롤
+		
+			<ProgressBar prefHeight="" prefWidth="" progress="0.0"/>
+			<ProgressIndicator prefHeight="" prefWidth="" progress=""0.0"/>
+			
+		Progress 속성은 진행 정도를 설정하는데, 최소값은 0.0이고 최대값은 1.0이다.
+	
+			double progress = mediaPlayer.getCurrentTime().toSeconds() / mediaPlayer.getTotalDuration().toSeconds();
+			progressBar.setProgress(progress);
+			progressIndicator.setProgress(progress);
+			
+			mediaPlayer.setOnEndOfMedia( ()-> {
+				progressBar.setProgress(1.0);
+				progressIndicator.setProgress(1.0);
+			});
+				//재생 마지막 시간과 전체 재생 시간이 정확히 일치하지 않기 때문에 마지막 값이 1.0이 되지 않을 수 있다.
+				//그래서 MediaPlayer가 EndOfMedia 상태가 되었을 때 progress 속성을 강제로 1.0으로 설정하는 것이 좋다.
+				
+차트 컨트롤
+	PieChart, LineChart, AreaChart, BarChart, BubbleChart, ScatterChart 등이 있다.
+	
+	PieChart 컨트롤
+		<PieChart/>
+		
+		pieChart.setData(FXCollections.observableArrayList(
+			new PieChar.Data("AWT",10);
+			new PieChar.Data("Swing",30);
+			new PieChar.Data("sWT",20);
+			new PieChar.Data("Java FX",35); //이름과 비율을 매개값으로 준다.
+		));
+		
+	BarChart 컨트롤
+		<BarChart>
+			<xAxis>
+				<CategoryAxis side ="BOTTOM />
+			</xAxis>
+			
+			<yAxis>
+				<NumberAxix side="LEFT" />
+			</yAxis>
+		</BarChart>
+		
+		XYChart.Series series1 = new XYChart.Series();
+		series1.setName("남자");
+		series1.setData(FXCollections.observableArrayList(
+			new XYChart.Data("2015",70);
+			new XYChart.Data("2016",80);
+			new XYChart.Data("2017",90);
+		));
+		XYChart.Series series2 = new XYChart.Series();
+		series2.setName("여자");
+		series2.setData(FXCollections.observableArrayList(
+			new XYChart.Data("2015",55);
+			new XYChart.Data("2016",85);
+			new XYChart.Data("2017",75);
+		));
+		
+		barChart.getData().add(series1);
+		barChart.getData().add(series2);
+		
