@@ -16,6 +16,5 @@
 		<Button text="DirectoryChooser" onAction="#handleDirectoryChooser"/>
 		<Button text="Popup" onAction="#handlePopup"/>
 		<Button text="Custom" onAction="#handleCustom"/>
-		
 	</children>
 </HBox>

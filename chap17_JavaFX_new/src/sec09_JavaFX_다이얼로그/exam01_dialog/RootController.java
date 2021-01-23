@@ -8,21 +8,24 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class RootController implements Initializable{
 	//컨트롤러에서 primaryStage를 사용하는 방법
 		//1 
 		/*
 		 * @FXML private HBox hbox;
-		 * 
-		 * @Override public void initialize(URL arg0, ResourceBundle arg1) {
-		 * 
-		 * }
 		 */
 		//2 메소드를 통해 AppMain클래스에서 Controller 객체로 전달받기
 		private Stage primaryStage;
@@ -77,9 +80,36 @@ public class RootController implements Initializable{
 		Popup popup = new Popup();
 		
 		Parent parent = FXMLLoader.load(getClass().getResource("popup.fxml"));
-		popup.getContent().add(parent);
-	}
-	public void handleCustom(ActionEvent e) {
+		ImageView imageView = (ImageView) parent.lookup("#imgMessage");
+		//@FXML가 아닌 다른 방법으로 컨트롤 객체를 얻어오는 법.
+		//컨트롤러가 지정안 되어 있는 fxml에서는 태그에 id="값"을 읽어오면 된다.
+		imageView.setImage(new Image(getClass().getResource("images/info.png").toString()));
+		imageView.setOnMouseClicked( event -> popup.hide());
 		
+		Label lblMessage = (Label) parent.lookup("#lblMessage");
+		lblMessage.setText("메세지가 왔습니다.");
+		
+		popup.getContent().add(parent);
+		popup.setAutoHide(true);
+		popup.show(primaryStage);
+	}
+	
+	public void handleCustom(ActionEvent e) throws Exception{
+		Stage dialog = new Stage(StageStyle.UTILITY);
+		dialog.initModality(Modality.WINDOW_MODAL);
+		dialog.initOwner(primaryStage);
+		dialog.setTitle("확인_커스텀다이얼로그");
+		
+		Parent parent = FXMLLoader.load(getClass().getResource("custom_dialog.fxml"));
+		Label txtTitle = (Label) parent.lookup("#txtTitle"); //리턴타입이 Node타입이므로, 강제타입변환 필요
+		txtTitle.setText("확인하셨습니다.");
+		Button btnOk = (Button) parent.lookup("#btnOk");
+		btnOk.setOnAction( event -> dialog.close());
+
+		Scene scene = new Scene(parent);
+		
+		dialog.setScene(scene);
+		dialog.setResizable(false);
+		dialog.show();
 	}
 }
