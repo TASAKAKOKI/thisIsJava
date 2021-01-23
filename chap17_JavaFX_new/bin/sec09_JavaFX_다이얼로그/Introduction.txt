@@ -2,7 +2,7 @@
 다이얼로그(Dialog)
 	주 윈도우에서 알림 또는 사용자의 입력을 위해서 실행되는 서브 윈도우
 	자체적으로 실행될 수 없고, 주 윈도우(소유자 윈도우)에 의해서 실행됨
-	모달과 모달리스
+	모달(madal)과 모달리스(modaless)
 		모달 다이얼로그는 다이얼로그는 닫기 전까지 소유자 윈도우를 사용할 수 없다.
 		모달리스 다이얼로그는 소유자 윈도우를 계속 사용할 수 있다.
 	JavaFX에서 제공하는 다이얼로그 종류
@@ -19,3 +19,48 @@ FileChooser
 	File selectedFile = fileChooser.showOpenDialog(primaryStage);
 	String selectedFilePath = selectedFile.getPath();
 
+DirectoryChooser
+	DirectoryChooser directoryChooser = new DirectoryChooser();
+	File selectedDir = directoryChooser.showDialog(primaryStage);
+	String selectedDirPath = selectedDir.getPath();
+	
+
+컨트롤러에서 primaryStage를 사용하기
+	컨트롤러에서 다이얼로그를 실행할 때 소유자 윈도우로 primaryStage가 필요
+		1)메인 클래스에서 전달하는 방법
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("root.fxml"));
+			Parent parent = loader.load();
+			RootController controller = loader.getController();
+			controller.setPrimaryStage(primaryStage);
+			//FXMLLoader객체를 생성한 뒤, load()메소드를 호출해 주는 이유는,
+			//FXMLLoader객체의 getController()인스턴스 메소드를 호출하기 위해서이다.
+			
+			public class RootController implements Initializable {
+				private Stage primaryStage;
+				public void setPrimaryStage(Stage primaryStage) {
+					this.primaryStage = primaryStage;
+				}
+				...
+			}
+		
+		2)컨테이너 또는 컨트롤러로부터 얻는 방법
+			Stage primaryStage = (Stage) 컨트롤.getScene().getWindow();
+			//주의:: initialize() 메소드 안에서는 사용할 수 없다
+			//nullException이 발생하므로, 주의할 것.
+			//FXMLLoader객체를 생성할 때 이미 initialize()메소드가 호출되는데,
+			//이때는 아직 Scene객체가 생성되기 이전이므로...
+			
+Popup
+	투명한 컨테이너를 제공하는 모달리스 다이얼로그
+		윈도우의 기본 장식(아이콘, 제목, 최소화 및 복원 버튼, 닫기 버튼)을 가지고 있지 않다.
+	용도
+		컨트롤의 툴팁(tooltip), 메시지 통지(notification), 드롭 다운 박스(drop down boxex)
+	Popup의 내용은 자바 코드로 작성하거나, FXML 파일로 작성
+		Popup popup = new Popup();
+		popup.getContent().add(FXMLLoader.load(getClass().getResource("popup.fxml"));
+		
+		popup.show(primaryStage); //PC 화면 정중앙에서 실행
+		popup.show(primaryStage, anchorX, anchorY);	//지정된 좌표에서 실행
+	
+	Popup은 최상위 윈도우: 소유자 윈도우를 닫거나, hide()를 호출하면 닫힌다.
+		setAutoHide(true):	다른 윈도우로 포커스를 이동하면 Popup은 자동으로 닫힌다.
