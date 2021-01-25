@@ -1,0 +1,18 @@
+/*CSS파일에서의 주석처리*/
+
+/*전체 Label 선택*/
+Label {
+	-fx-padding:5;
+}
+
+/*id="lblId"를 가진 컨트롤 선택 */
+#lblId {
+	-fx-background-color: black;
+	-fx-text-fill: yellow;
+}
+
+/*styleClass="lblClass"를 가진 컨트롤 선택 */
+.lblClass {
+	-fx-background-color: blue;
+	-fx-text-fill: white;
+}
