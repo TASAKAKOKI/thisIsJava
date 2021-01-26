@@ -1,0 +1,121 @@
+JavaFX UI 스레드 동시성
+	JavaFX UI는 스레드에 안전하지 않다.
+		UI를 생성하고 변경하는 작업은 JavaFX Application Thread가 담당한다.
+		다른 작업 스레드들은 UI를 생성하거나 변경할 수 없다.
+		
+			main Thread: 에서 launch()를 실행
+					   : launch()에 의해 JavaFX Application Thread가 생성됨
+			ㄴJavaFX Application Thread:	main스레드의 launch()메소드에 의해 이 스레드가 start()메소드를 실행
+									   : UI생성/변경
+									   : 컨트롤러 생성 및 이벤트 처리 --> Worker Thread(작업자 스레드)를 생성하여 작업자스레드에서 처리
+									   		//이때 작업자스레드에서는 UI생성/변경 코드를 작성하면 안 된다.
+									   		//작업자 스레드는 계산, 네트워킹 등 시간을 요하는 작업을 처리할 때 사용한다.
+	
+	JavaFX Application Thread가 시간을 요하는 작업을 하지 않도록 한다. 
+		시간을 요하는 작업을 하게 되면 UI는 반응하지 않고 멈춰있는 상태가 된다.
+		파일을 읽고 쓰거나, 네트워크상에서 데이터를 주고 받을 경우 등 시간을 요하는 작업
+		다른 작업 스레드를 생성해서 처리하는 것이 좋다.
+	
+	작업 스레드에서 UI 변경이 필요한 경우
+		-작업 스레드상에서 Platform.runLater()메소드를 호출한다.
+		-javafx.concurrentAPI인 Task 또는 Service를 이용한다.
+	
+Platform.runLater() 메소드
+	-작업자스레드에서 호출된다.
+	-Runnable 객체인 매개값을 이벤트큐에 넣는 역할을 한다.
+	-JavaFX Application Thread가 이벤트 큐에서 Runnable 객체를 하나씩 빼서 내부 코드를 실행한다.
+	
+		Platform.runLater( () -> { --> 이 메소드는 작업자 스레드에서 호출
+			//UI 생성 및 변경 코드 ----> JavaFX Application Thread에서 실행됨.
+		});
+		직접 Runnable 객체 생성 			
+
+Task 클래스
+	javafx.concurrent 패키지가 제공하는 스레드 동시성 API
+		Worker
+			ㄴTask
+			ㄴService
+		//좀더 쉽게 멀티 스레드 환경에서 UI를 변경하고, 작업 스레드를 중지 시키는 방법을 제공하는 역할
+		
+	Worker 인터페이스
+		작업 스레드가 UI를 변경할 때 Task와 Service에서 공통적으로 사용할 수 있는 메소드를 제공	
+	Task 추상 클래스
+		JavaFX Application에서 비동기 작업을 표현한 클래스
+	Service 추상 클래스
+		Task를 간편하게 시작, 취소, 재시작을 할 수 있는 기능을 제공하는 클래스
+
+Task 생성
+	//작업자 스레드의 결과값이 있을 때,
+	Task<Integer> task = new Task<Integer>() {
+		@Override
+		protected Integer call() throws Exception {
+			int result = 0;
+			//작업 코드...
+			return result;
+		}
+	}
+	//작업자 스레드의 결과값이 없을 때,
+	Task<Void> task = new Task<Void>() {
+		@Override
+		protected Void = new Task<Void>() {
+			//작업 코드...
+			return null; //반드시 작성해 주어야 한다.
+		}
+	}
+
+Task 실행
+	새로운 작업 스레드에서 Task 처리
+		Task<Integer> task = new Task<Integer>() {...};
+		Thread thread = new Thread(task); //Thread에 Runnable 객체 전달
+		thread.setDaemon(true);
+		thread.start();
+	
+	스레드풀(ExecutorService)에서 Task 처리
+		Task<Integer> task = new Task<Integer>() {...};
+		executorService.submit(task); //ExecutorService에 Runnable 객체 전달
+	
+Task 취소
+	Task가 처리되는 도중 취소를 하려면 cancel()메소드를 호출한다.
+	Task는 cancel()메소드가 호출되었는지 검사해서 작업을 멈출 수 있도록 해야 한다.
+	Task는 Thread와 마찬가지로, 한번만 사용할 수 있고, 재사용할 수 없기 때문에 작업이 완료되었거나, 취소된 후에 작업을 재실행하려면 Task를 다시 생성해야 한다.
+	
+	Task의 isCanceled()메소드로 cancel()여부를 확인 할 수 있다.
+	
+
+Service 클래스
+	작업 스레드 상에서 Task를 간편하게 시작, 취소, 재시작을 할 수 있도록 기능 제공
+	
+	Service 생성
+		class CustomService extends Service<T> {
+			@Override
+			protected Task<T> createTask() {
+				Task<T> task = new Task<>() {...};
+				return task;
+			}
+		}
+			//T에는 파라미터 타입이 오거나, Void가 온다.
+		
+	Service 시작, 취소, 재시작
+		start()
+		cancel()
+		restart() 
+		//이들 메소드는 JavaFX Application Thread상에서 호출되므로, UI에 안전하다.
+		//cancel()메소드를 호출한다고 해서, 스레드가 중지되는 것이 아니므로, 안전하게 Task작성시 무한loop를 빠져나오도록 코드를 짜야 한다.
+		//start()나 restart()가 호출되면, Service객체의 createTask()가 실행된다.
+		
+	작업 상태별 콜백
+		작업이 어떻게 처리됐는지에 따라 Service의 다음 세가지 메소드중 하나가 자동 콜백된다.
+			콜백 메소드		설명
+			succeded()		성공적으로 call()메소드가 리턴되었을 때
+			canceled()		cancel() 메소드로 작업이 취소되었을 때
+			failed()		예외가 발생되었을 때
+			// 이 메소드들은 JavaApplication Thread상에서 호출되므로 내부에 안전하게 UI 변경코드를 작성할 수 있다.
+		
+			Service클래스를 작성할 때 재정의해서 애플리케이션 로직을 재구성할 수 있다.
+			작업 결과가 있는 Task일 경우. 즉, call()메소드가 리턴값이 있을 경우
+				succeded()메소드를 재정의해서 작업 결과를 다음과 같이 얻을 수 있다.
+				V는 Task의 타입 파라미터에 지정된 타입이다.
+					@Override
+					protected void succeded() {
+						V v = service.getValue();
+					}
