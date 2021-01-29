@@ -14,8 +14,8 @@ public class ConsoleExample {
 		String strPassword = new String(charPass);
 		
 		System.out.println("------------------------");
-		System.out.println(id);
-		System.out.println(strPassword);
+		System.out.println("입력된 id: " + id);
+		System.out.println("입력된 password: " + strPassword);
 		//이클립스에서는 console이 null값을 가지므로 예외 발생
 	}
 }
