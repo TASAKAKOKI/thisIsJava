@@ -9,7 +9,7 @@ public class InputStreamReaderExample {
 		InputStream is = System.in;
 			//콘솔로 부터 바이트를 입력받아 읽는다.
 		Reader reader = new InputStreamReader(is);
-			//이를 문자로 읽기 위해, InputStreamReader
+			//이를 문자로 읽기 위해, InputStreamReader보조스트림의 매개값으로 바이트기반의 InputStream타입을 넘겨준다.
 		
 		
 		int readCharNo;

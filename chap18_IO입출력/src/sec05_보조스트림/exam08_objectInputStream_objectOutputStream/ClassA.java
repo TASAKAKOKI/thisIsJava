@@ -6,10 +6,10 @@ import java.io.Serializable;
 public class ClassA implements Serializable{
 	int field1;
 	ClassB field2 = new ClassB();
+	//위 두개의 필드는 바이트로 변환이 됨
 	static int field3;
-		//위 두개의 필드는 바이트로 변환이 됨
 	transient int field4;
-		//위 필드는 직렬화에서 제외됨
+	//위 두개의 필드는 직렬화에서 제외됨
 }
 
 class ClassB implements Serializable{

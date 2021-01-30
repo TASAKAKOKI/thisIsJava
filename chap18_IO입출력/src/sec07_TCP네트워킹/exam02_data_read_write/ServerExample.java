@@ -12,7 +12,7 @@ public class ServerExample {
 		ServerSocket serverSocket = null;
 		try {
 			serverSocket = new ServerSocket(); //ServerSocket객체 생성
-			serverSocket.bind( new InetSocketAddress("localhost", 5001) );
+			serverSocket.bind( new InetSocketAddress("localhost", 5002) );
 			
 			//서버는 항상 클라이언트의 연결 요청을 기다려야 하므로, while문으로 처리
 			while(true) {

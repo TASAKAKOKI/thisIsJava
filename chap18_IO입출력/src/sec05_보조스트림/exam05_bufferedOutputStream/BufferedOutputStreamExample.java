@@ -31,7 +31,7 @@ public class BufferedOutputStreamExample {
 			
 			System.out.println("입출력스트림에 모두 버퍼를 사용하지 않았을 때: " + (end-start) + "ms");
 			
-		//버퍼를 사용하지 않았을 때 걸린 시간 조사
+		//출력스트림에 버퍼를 사용하지 않았을 때 걸린 시간 조사
 			fis = new FileInputStream(filePath + "/image.jpg");
 			bis = new BufferedInputStream(fis);
 			fos = new FileOutputStream(filePath + "/image2.jpg");
@@ -46,7 +46,7 @@ public class BufferedOutputStreamExample {
 			fis.close();
 			
 			System.out.println("출력스트림에 버퍼를 사용하지 않았을 때: " + (end-start) + "ms");
-		//버퍼를 사용했을 때 걸린 시간 조사
+		//입출력 스트림 모두에 버퍼를 사용했을 때 걸린 시간 조사
 			fis = new FileInputStream(filePath + "/image.jpg");
 			bis = new BufferedInputStream(fis);
 			fos = new FileOutputStream(filePath + "/image2.jpg");

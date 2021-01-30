@@ -1,4 +1,4 @@
-package sec05_보조스트림.exam08_objectInputStream_objectOutputStream;
+ package sec05_보조스트림.exam08_objectInputStream_objectOutputStream;
 
 import java.io.FileOutputStream;
 import java.io.ObjectOutputStream;

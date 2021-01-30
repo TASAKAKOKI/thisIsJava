@@ -17,8 +17,8 @@ public class ServerExample {
 				System.out.println("[클라이언트로부터 연결 요청을 기다림...]");
 				Socket socket = serverSocket.accept();//연결요청이 되기 전까지 블로킹이 되다가, 연결요청이 들어오면, Socket을 반환
 				
-				InetSocketAddress isa  = (InetSocketAddress) socket.getRemoteSocketAddress();
-				System.out.println("[연결 수락함] " + isa.getHostName());
+				InetSocketAddress isa  = (InetSocketAddress) socket.getRemoteSocketAddress();//통신용 socket을 통해 연결된 클라이언트의 정보를 얻어오기
+				System.out.println("[연결 수락함] " + isa.getHostName()); //얻어온 정보로 클라이언트의 IP주소를 리턴하는 메소드를 호출
 			}
 		} catch(Exception e) {
 			e.printStackTrace();
