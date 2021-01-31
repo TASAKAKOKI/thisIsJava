@@ -4,8 +4,8 @@ import java.io.FileReader;
 
 public class FileReaderExample {
 	public static void main(String[] args) throws Exception{
-		String directory = "C:/Users/KOKHEEJIN/eclipse-workspace/chap18_IO입출력/src/sec04_파일File_입출력/exam04_fileReader/FileReaderExample.java";
-		FileReader fr = new FileReader(directory);
+		String filePath = "C:/Users/KOKHEEJIN/eclipse-workspace/chap18_IO입출력/src/sec04_파일File_입출력/exam04_fileReader/FileReaderExample.java";
+		FileReader fr = new FileReader(filePath);
 		
 		int readCharNo;
 		char[] cbuf = new char[100];

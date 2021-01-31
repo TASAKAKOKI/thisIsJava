@@ -13,7 +13,7 @@ public class ClientExample {
 		try {
 			socket = new Socket(); //socket생성
 			System.out.println("[연결 요청...]");
-			socket.connect( new InetSocketAddress("localhost", 5002) ); //socket에서 서버로 연결 요청
+			socket.connect( new InetSocketAddress("localhost", 5001) ); //socket에서 서버로 연결 요청
 			System.out.println("[연결 성공]");
 			
 			//socket을 통해 데이터를 받고 보내는 코드 작성
